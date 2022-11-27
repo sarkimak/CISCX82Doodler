@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CISCX82Doodler</string>
+    <string name="brushSize">scroll bar for brush size</string>
+    <string name="choose_color">choose color</string>
+    <string name="opacity_tool">opacity tool</string>
+    <string name="brush_size">brush size</string>
+    <string name="clear_screen">clear screen</string>
+</resources>
