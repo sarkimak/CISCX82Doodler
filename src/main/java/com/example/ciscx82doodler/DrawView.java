@@ -1,21 +1,22 @@
 package com.example.ciscx82doodler;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Canvas;
-import android.graphics.Bitmap;
+
 import java.util.ArrayList;
-import android.util.AttributeSet;
 
 public class DrawView extends View {
 
     public LayoutParams params;
-    private float x, y;
+    private int x, y;
     private Path p;
     private Paint brush;
     private ArrayList<Brush> paths = new ArrayList<>();
@@ -54,6 +55,12 @@ public class DrawView extends View {
     public void setStrokeWidth(int w) {
         brushSize = w;
     }
+    public void clear() {
+        if (paths.size() != 0) {
+            paths.remove(paths.size() - 1);
+            invalidate();
+        }
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -69,7 +76,7 @@ public class DrawView extends View {
         canvas.drawBitmap(b, 0, 0, bPaint);
         canvas.restore();
     }
-    private void touchStart(float pX, float pY) {
+    private void touchStart(int pX, int pY) {
         p = new Path();
         Brush fp = new Brush(currentColor, brushSize, p);
         paths.add(fp);
