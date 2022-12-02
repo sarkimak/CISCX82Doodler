@@ -9,93 +9,112 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 
 import java.util.ArrayList;
 
 public class DrawView extends View {
-
-    public LayoutParams params;
+    private static final float TOUCH_TOLERANCE = 4;
     private float x, y;
     private Path p;
     private Paint brush;
     private ArrayList<Brush> paths = new ArrayList<>();
-    private int currentColor;
+    private int color;
     private int brushSize;
+    private int opa;
     private Bitmap b;
     private Canvas c;
-    private Paint bPaint = new Paint(Paint.DITHER_FLAG);
+    private Paint bPaint = new Paint();
 
 
     public DrawView(Context context) {
         this(context, null);
     }
-    public DrawView(Context context,AttributeSet attr) {
-        super(context, attr);
+    public DrawView(Context context,AttributeSet attrs) {
+        super(context, attrs);
         brush = new Paint();
 
-        brush.setAntiAlias(true);
-        brush.setDither(true);
         brush.setColor(Color.RED);
-        brush.setAlpha(0xff);
-        brush.setStrokeJoin(Paint.Join.ROUND);
+        brush.setAlpha(255);
+        brush.setStrokeWidth(10);
         brush.setStyle(Paint.Style.STROKE);
 
-        params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
     public void initial(int h, int w) {
         b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         c = new Canvas(b);
-        currentColor = Color.RED;
+        color = Color.RED;
         brushSize = 20;
+        opa = 255;
     }
-    public void setColor(int color) {
-        currentColor = color;
+    public void setColor(int c) {
+        color = c;
     }
-    public void setStrokeWidth(int w) {
-        brushSize = w;
+    public void setBrushSize(int s) {
+        brushSize = s;
+    }
+    public void setOpa(int o) {
+        opa = o;
+    }
+    public void clear() {
+        paths.clear();
+        invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.save();
+        c.drawColor(Color.WHITE);
 
-        int backgroundColor = Color.WHITE;
-        c.drawColor(backgroundColor);
-
-        for (Brush fp : paths) {
-            brush.setColor(fp.color);
+        for (Brush d : paths) {
+            brush.setColor(d.color);
             brush.setStrokeWidth(brushSize);
-            c.drawPath(fp.path, brush);
+            brush.setAlpha(d.opa);
+            c.drawPath(d.path, brush);
         }
         canvas.drawBitmap(b, 0, 0, bPaint);
         canvas.restore();
     }
     private void touchStart(float pX, float pY) {
         p = new Path();
-        Brush fp = new Brush(currentColor, brushSize, p);
-        paths.add(fp);
+        Brush d = new Brush(color, brushSize, opa, p);
+        paths.add(d);
         p.reset();
         p.moveTo(pX, pY);
         x = pX;
         y = pY;
     }
-
+    private void touchMove(float tX, float tY) {
+        float dx = Math.abs(tX - x);
+        float dy = Math.abs(tY - y);
+        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+            p.quadTo(x, y, (tX + x) / 2, (tY + y) / 2);
+            x = tX;
+            y = tY;
+        }
+    }
+    private void touchUp() {
+        p.lineTo(x, y);
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
 
-        switch(event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                p.moveTo(x, y);
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                p.lineTo(x, y);
+                touchStart(x, y);
+                invalidate();
                 break;
-            default:
-                return false;
+            case MotionEvent.ACTION_MOVE:
+                touchMove(x, y);
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                touchUp();
+                invalidate();
+                break;
         }
-        postInvalidate();
-        return false;
+        return true;
     }
+
 }

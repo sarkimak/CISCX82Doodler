@@ -2,86 +2,114 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible"
-    tools:context=".MainActivity"
-    tools:ignore="ExtraText"
-    tools:visibility="visible">
-
-    <SeekBar
-        android:id="@+id/brushSize"
-        android:layout_width="161dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="46dp"
-        android:contentDescription="@string/brushSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/chooseColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clearScreen" />
-
-    <ImageButton
-        android:id="@+id/chooseColor"
-        android:layout_width="76dp"
-        android:layout_height="83dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="605dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="43dp"
-        android:contentDescription="@string/choose_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/opacityTool"
-        app:layout_constraintStart_toEndOf="@+id/brushSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="?android:attr/textSelectHandle"
-        app:tint="#E91E63" />
-
-    <ImageButton
-        android:id="@+id/clearScreen"
-        android:layout_width="88dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="307dp"
-        android:layout_marginBottom="497dp"
-        android:contentDescription="@string/clear_screen"
-        app:layout_constraintBottom_toTopOf="@+id/brushSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_delete"
-        tools:ignore="ImageContrastCheck" />
-
-    <ImageButton
-        android:id="@+id/opacityTool"
-        android:layout_width="86dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="613dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="43dp"
-        android:contentDescription="@string/opacity_tool"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/chooseColor"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/dialog_frame" />
+    tools:context=".MainActivity">
 
     <com.example.ciscx82doodler.DrawView
         android:id="@+id/draw_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/draw_view"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/clearB"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/erase"
+            android:onClick="clear"
+            android:text="Clear"
+            android:textSize="10sp"
+            tools:layout_editor_absoluteX="21dp"
+            tools:layout_editor_absoluteY="669dp" />
+
+        <Button
+            android:id="@+id/colorB"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="changeColor"
+            android:text="Color"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            tools:layout_editor_absoluteX="41dp"
+            tools:layout_editor_absoluteY="669dp" />
+
+        <Button
+            android:id="@+id/sizeB"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="changeSize"
+            android:text="Size"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            tools:layout_editor_absoluteX="41dp"
+            tools:layout_editor_absoluteY="669dp" />
+
+        <Button
+            android:id="@+id/opacityB"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:onClick="changeOpacity"
+            android:text="Opacity"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            tools:layout_editor_absoluteX="41dp"
+            tools:layout_editor_absoluteY="669dp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <SeekBar
+        android:id="@+id/colorBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:isScrollContainer="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/draw_view" />
+    <SeekBar
+        android:id="@+id/sizeBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:isScrollContainer="false"
+        android:visibility="gone"
+        android:max="40"
+        android:progress="10"
+        app:layout_constraintBottom_toTopOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/draw_view" />
+    <SeekBar
+        android:id="@+id/opacityBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:isScrollContainer="false"
+        android:visibility="gone"
+        android:max="255"
+        android:progress="255"
+        app:layout_constraintBottom_toTopOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/draw_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
