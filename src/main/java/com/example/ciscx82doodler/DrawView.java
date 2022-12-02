@@ -1,6 +1,8 @@
 package com.example.ciscx82doodler;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -9,35 +11,73 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
+import java.util.ArrayList;
+
 public class DrawView extends View {
 
     public LayoutParams params;
-    private Path p = new Path();
-    private Paint brush = new Paint();
+    private float x, y;
+    private Path p;
+    private Paint brush;
+    private ArrayList<Brush> paths = new ArrayList<>();
+    private int currentColor;
+    private int brushSize;
+    private Bitmap b;
+    private Canvas c;
+    private Paint bPaint = new Paint(Paint.DITHER_FLAG);
+
 
     public DrawView(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
-
-    public DrawView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    public DrawView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context);
-    }
-
-    private void init(Context context) {
+    public DrawView(Context context,AttributeSet attr) {
+        super(context, attr);
+        brush = new Paint();
 
         brush.setAntiAlias(true);
+        brush.setDither(true);
         brush.setColor(Color.RED);
+        brush.setAlpha(0xff);
         brush.setStrokeJoin(Paint.Join.ROUND);
         brush.setStyle(Paint.Style.STROKE);
 
         params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+    }
+    public void initial(int h, int w) {
+        b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        c = new Canvas(b);
+        currentColor = Color.RED;
+        brushSize = 20;
+    }
+    public void setColor(int color) {
+        currentColor = color;
+    }
+    public void setStrokeWidth(int w) {
+        brushSize = w;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+
+        int backgroundColor = Color.WHITE;
+        c.drawColor(backgroundColor);
+
+        for (Brush fp : paths) {
+            brush.setColor(fp.color);
+            brush.setStrokeWidth(brushSize);
+            c.drawPath(fp.path, brush);
+        }
+        canvas.drawBitmap(b, 0, 0, bPaint);
+        canvas.restore();
+    }
+    private void touchStart(float pX, float pY) {
+        p = new Path();
+        Brush fp = new Brush(currentColor, brushSize, p);
+        paths.add(fp);
+        p.reset();
+        p.moveTo(pX, pY);
+        x = pX;
+        y = pY;
     }
 
     @Override
