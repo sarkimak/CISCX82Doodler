@@ -59,6 +59,12 @@ public class DrawView extends View {
         paths.clear();
         invalidate();
     }
+    public void undo() {
+        if (paths.size() != 0) {
+            paths.remove(paths.size() - 1);
+            invalidate();
+        }
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {

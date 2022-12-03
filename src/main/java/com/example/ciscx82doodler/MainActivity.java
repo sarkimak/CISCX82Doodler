@@ -13,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private DrawView drawView;
-    private Button color, size, opa, clear;
-    private SeekBar colorBar, sizeBar, opacityBar;
+    private Button color, size, opa, clear, undo;
+    private SeekBar colorBar;
+    private SeekBar sizeBar;
+    private SeekBar opacityBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         opa = (Button) findViewById(R.id.opacityB);
         opacityBar = (SeekBar) findViewById(R.id.opacityBar);
         clear = (Button) findViewById(R.id.clearB);
+        undo = (Button) findViewById(R.id.undo);
 
         colorBar.setMax(256*7-120);
         colorBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -118,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void clear(View view){
         drawView.clear();
+    }
+    public void undo(View view){
+        drawView.undo();
     }
 
     //toggles color slider

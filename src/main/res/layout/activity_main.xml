@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.482" />
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -39,18 +40,6 @@
             android:text="Clear"
             android:textSize="10sp"
             tools:layout_editor_absoluteX="21dp"
-            tools:layout_editor_absoluteY="669dp" />
-        <Button
-            android:id="@+id/opacityB"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:onClick="changeOpacity"
-            android:text="Opacity"
-            android:backgroundTint="@color/offwhite"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            tools:layout_editor_absoluteX="41dp"
             tools:layout_editor_absoluteY="669dp" />
 
         <Button
@@ -75,8 +64,32 @@
             android:textSize="10sp"
             tools:layout_editor_absoluteX="41dp"
             tools:layout_editor_absoluteY="669dp" />
+        <Button
+            android:id="@+id/opacityB"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:onClick="changeOpacity"
+            android:text="Opacity"
+            android:backgroundTint="@color/offwhite"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            tools:layout_editor_absoluteX="41dp"
+            tools:layout_editor_absoluteY="669dp" />
+        <Button
+            android:id="@+id/undo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/red"
+            android:onClick="undo"
+            android:text="U"
+            android:textColor="@color/black"
+            android:textSize="8sp"
+            tools:layout_editor_absoluteX="20dp"
+            tools:layout_editor_absoluteY="500dp"/>
 
     </androidx.appcompat.widget.Toolbar>
+
 
     <SeekBar
         android:id="@+id/colorBar"
